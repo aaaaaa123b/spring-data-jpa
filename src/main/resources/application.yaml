@@ -1,0 +1,15 @@
+spring:
+  liquibase:
+    change-log: classpath:/migration/changelog.xml
+  datasource:
+    url: jdbc:postgresql://localhost:5432/jpa_demo
+    password: 4021
+    username: postgres
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true

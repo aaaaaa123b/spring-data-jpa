@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet id="2023-12-24_20:00" author="Diana Harlap">
+        <sql>
+            create table payment
+            (
+                id           bigserial PRIMARY KEY,
+                payment_from varchar(255),
+                payment_to   varchar(255),
+                payment_type varchar(255)
+            );
+
+            create table payment_by_erip
+            (
+                field_for_insertion varchar(255),
+                value_for_insertion varchar(255),
+                id                  bigint PRIMARY KEY REFERENCES payment (id)
+            );
+
+            create table payment_by_requisite
+            (
+                destination varchar(255),
+                receiver    varchar(255),
+                unp         varchar(255),
+                id          bigint PRIMARY KEY REFERENCES payment (id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="2023-12-24_20:05" author="Diana Harlap">
+        <sql>
+            insert into payment (id, payment_from, payment_to, payment_type)
+            values  (1, 'from1', 'from1', 'REQUISITE'),
+                    (2, '1234567', '23456789', 'ERIP'),
+                    (3, '22245632', '1235124', 'CARD'),
+                    (4, '111111111', '2222222222','PHONE');
+
+            insert into payment_by_requisite (destination, receiver, unp, id)
+            values  ('unp1', 'receiver1', 'destination1', 1);
+
+            insert into payment_by_erip (field_for_insertion, value_for_insertion, id)
+            values  ('Insertion field', '555555', 2);
+        </sql>
+    </changeSet>
+</databaseChangeLog>
